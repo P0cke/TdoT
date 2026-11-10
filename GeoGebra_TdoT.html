@@ -1458,11 +1458,12 @@ addEventListener('keydown', e => {
 }, true);
 
 /* ---------- Vollbild ---------- */
-/* Auf iPad/iPhone oder als Home-Bildschirm-App: kein Browser-Vollbild (Safari zeigt sonst ein Schließen-Kreuz) */
+/* Vollbild: automatisch beim Start und nach jedem Verlassen beim nächsten Tippen wieder an.
+   Als Home-Bildschirm-App nicht nötig. Auf iPad/iPhone wird der Vollbild-Knopf ausgeblendet. */
 const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const IS_APP = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches;
-const NO_FS = IS_IOS || IS_APP;
-if(NO_FS) document.documentElement.classList.add('nofs');
+const NO_FS = IS_APP;
+if(IS_IOS || IS_APP) document.documentElement.classList.add('nofs');
 const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
 function enterFull(){
   if(NO_FS) return;
@@ -1482,7 +1483,9 @@ function startFromSplash(){
 $('splash').addEventListener('click', startFromSplash);
 $('splash').addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startFromSplash(); } });
 /* Falls das Vollbild verlassen wurde: beim nächsten Klick wieder einschalten */
-document.addEventListener('pointerdown', e => { if(!fsManualOff && !isFull() && !e.target.closest('[data-fs]')) enterFull(); }, true);
+/* Safari (iPad) erlaubt Vollbild nur direkt nach einer Berührung -> bei touchend/click/keydown erneut versuchen */
+const refull = e => { if(!fsManualOff && !isFull() && !(e.target && e.target.closest && e.target.closest('[data-fs]'))) enterFull(); };
+['pointerdown','touchend','click','keydown'].forEach(ev => document.addEventListener(ev, refull, true));
 document.addEventListener('fullscreenchange', () => {
   if(S && S.api){ setTimeout(() => { try{ const h = $('ggbHost'); S.api.setSize(h.clientWidth, h.clientHeight); fitView(S.api, SETUP[S.task].box, !!SETUP[S.task].toolbar); }catch(e){} }, 300); }
 });
