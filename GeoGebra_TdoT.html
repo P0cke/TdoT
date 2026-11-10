@@ -2,7 +2,14 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<!-- iPad/iPhone: Als App zum Home-Bildschirm hinzufügen -> startet ohne Safari-Leisten, ohne Kreuz -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mathe-Missionen">
+<meta name="theme-color" content="#1d2b53">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>GeoGebra-Missionen · Tag der offenen Tür · Gymnasium Dionysianum</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +22,9 @@
   --shadow:6px 6px 0 var(--ink);
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
+html,body{margin:0;height:100%;overscroll-behavior:none}
+html.nofs [data-fs]{display:none!important}
+body{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 body{
   font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink);
   background-color:var(--paper);
@@ -1449,8 +1458,14 @@ addEventListener('keydown', e => {
 }, true);
 
 /* ---------- Vollbild ---------- */
+/* Auf iPad/iPhone oder als Home-Bildschirm-App: kein Browser-Vollbild (Safari zeigt sonst ein Schließen-Kreuz) */
+const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const IS_APP = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches;
+const NO_FS = IS_IOS || IS_APP;
+if(NO_FS) document.documentElement.classList.add('nofs');
 const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
 function enterFull(){
+  if(NO_FS) return;
   const d = document.documentElement;
   try{ const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d); if(r && r.catch) r.catch(()=>{}); }catch(e){}
 }
