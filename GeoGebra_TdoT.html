@@ -1139,7 +1139,7 @@ const SETUP = {
       s.targets = {Q:[10,5],R:[10,4],S:[9,4],U:[6,-2],V:[7,-2],W:[7,-3],A_1:[9,1],B_1:[7,1],C_1:[11,1],D_1:[8,-1],E_1:[10,-1]};
       /* Eigenes Karo-Raster (halbe Einheiten) statt GeoGebras automatischem Raster,
          das je nach Bildschirmgröße gröber wird */
-      const STEP = 0.5;
+      const STEP = 1;
       try{ api.setGridVisible(false); }catch(e){}
       try{ api.setGraphicsOptions && api.setGraphicsOptions(1, {grid:false, pointCapturing:0}); }catch(e){}
       api.evalCommand(`karoV = Sequence(Segment((k, -10), (k, 12)), k, -8, 22, ${STEP})`);
