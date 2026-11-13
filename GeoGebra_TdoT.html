@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Mathe-Missionen">
 <meta name="theme-color" content="#1d2b53">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>GeoGebra-Missionen · Tag der offenen Tür · Gymnasium Dionysianum</title>
+<title>Dio-Mathechampion</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,6 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overscroll-behavior:none}
-html.nofs [data-fs]{display:none!important}
 body{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
 body{
   font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink);
@@ -125,7 +124,7 @@ button{font:inherit;cursor:pointer}
 @media (max-width:900px){.wmain{flex-direction:column}.side{width:auto;flex-direction:row;flex-wrap:wrap}.side .panel{flex:1;min-width:240px}}
 
 /* ---------- Modals ---------- */
-.overlay{position:fixed;inset:0;background:rgba(17,24,52,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;backdrop-filter:blur(2px)}
+.overlay{position:fixed;inset:0;background:rgba(17,24,52,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50}
 .modal{background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:10px 10px 0 var(--ink);max-width:640px;width:100%;max-height:96vh;overflow:auto;animation:pop .35s cubic-bezier(.2,1.4,.4,1) both}
 @keyframes pop{from{transform:scale(.85) translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .modal .head{padding:12px 22px 10px;border-bottom:3px solid var(--ink);display:flex;gap:16px;align-items:center}
@@ -196,7 +195,7 @@ button{font:inherit;cursor:pointer}
 .stage.small.wrong{border-color:var(--coral);box-shadow:4px 4px 0 var(--coral)}
 .stage .tagline{position:absolute;left:10px;top:8px;font-weight:800;font-size:.85rem;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:.1em .5em}
 .fnet{position:relative;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.45,.05,.3,1)}
-.fnet.spin{animation:fspin 9s linear infinite}
+.fnet.spin{animation:fspin 9s linear 1}
 @keyframes fspin{from{transform:translate(var(--tx),var(--ty)) rotateX(56deg) rotateZ(-28deg)}to{transform:translate(var(--tx),var(--ty)) rotateX(56deg) rotateZ(332deg)}}
 .face{position:absolute;box-sizing:border-box;transform-style:preserve-3d;backface-visibility:visible;border:2px solid #1d2b53;border-radius:2px;
   transition:transform .9s cubic-bezier(.45,.05,.3,1)}
@@ -232,12 +231,6 @@ button{font:inherit;cursor:pointer}
 .dots i.now{background:var(--sun)}
 .dots i.ok{background:var(--teal);color:#fff}
 
-#splash{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;padding:24px;
-  background-color:var(--paper);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;cursor:pointer}
-#splash h1{font-size:clamp(2.6rem,6vw,4.6rem);margin:0;line-height:1.05}
-#splash h1 span{background:linear-gradient(transparent 58%,var(--sun) 58%);padding:0 .1em}
-#splash p{font-size:1.3rem;font-weight:700;margin:0;max-width:30em}
-#splash .btn{font-size:1.6rem;padding:.7em 1.8em;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .fsbtn svg{width:18px;height:18px}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:100}
@@ -245,20 +238,11 @@ button{font:inherit;cursor:pointer}
 </head>
 <body>
 
-<!-- ================= STARTBILDSCHIRM (Vollbild) ================= -->
-<div id="splash" role="button" tabindex="0" aria-label="Starten">
-  <div class="school">Tag der offenen Tür · Gymnasium Dionysianum</div>
-  <h1>Deine <span>GeoGebra</span>-Missionen</h1>
-  <p>Vier spannende Mathe-Missionen warten auf dich. Bist du bereit?</p>
-  <button class="btn primary">Start!</button>
-</div>
-
 <!-- ================= MENU ================= -->
 <main id="menu">
   <div class="topline">
     <div class="school">Tag der offenen Tür · Gymnasium Dionysianum</div>
     <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-    <button class="btn small fsbtn" data-fs title="Vollbild an/aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Vollbild</button>
     <button class="btn small" id="helloBtn" title="Namen ändern"></button>
     </div>
   </div>
@@ -290,7 +274,6 @@ button{font:inherit;cursor:pointer}
     <button class="btn small" id="backBtn">← Übersicht</button>
     <h2 id="workTitle">Mission</h2>
     <button class="btn small" id="infoBtn">Aufgabe anzeigen</button>
-    <button class="btn small fsbtn" data-fs title="Vollbild an/aus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Vollbild</button>
   </div>
   <div class="wmain">
     <div id="ggbHost"></div>
@@ -517,11 +500,7 @@ function renderMenu(stampFor){
   $('menu').classList.toggle('alldone', n === N);
 }
 function renderHello(){ $('helloBtn').textContent = state.name ? `Hallo, ${state.name}! ✎` : 'Wie heißt du? ✎'; }
-/* Während der Namenseingabe kein Vollbild: Safari (iPad) blockiert im Vollbild die Tastatur */
-let typingName = false;
 function askName(){
-  typingName = true;
-  try{ if(isFull()) exitFull(); }catch(e){}
   const m = showModal(`<div class="content" style="padding:30px 30px 28px;text-align:center">
       <div style="font-size:3rem;line-height:1">👋</div>
       <h2 style="font-size:2.2rem;margin:.2em 0 .1em">Wie heißt du?</h2>
@@ -536,7 +515,7 @@ function askName(){
   const f = m.el.querySelector('#nameField'), ok = m.el.querySelector('[data-ok]');
   f.value = state.name || '';
   const upd = () => { const v = f.value.trim(); ok.disabled = !v; ok.style.opacity = v ? 1 : .5; };
-  const done = v => { state.name = v; save(); renderHello(); f.blur(); m.close(); typingName = false; enterFull(); };
+  const done = v => { state.name = v; save(); renderHello(); f.blur(); m.close(); };
   f.addEventListener('input', upd); upd();
   f.addEventListener('keydown', e => { if(e.key === 'Enter' && f.value.trim()) done(f.value.trim()); });
   ok.addEventListener('click', () => f.value.trim() && done(f.value.trim()));
@@ -605,9 +584,12 @@ const Confetti = (() => {
   const cv = $('confetti'), ctx = cv.getContext('2d');
   const colors = ['#ff5a4e','#ffc93c','#14a38b','#3f8efc','#8b5cf6','#ff8fa3','#1d2b53'];
   let parts = [], running = false, megaTimer = null;
-  function resize(){ cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
+  // Auf Touch-Geräten (iPad) weniger Konfetti und geringere Auflösung -> flüssig auch auf älteren Geräten
+  const LITE = matchMedia('(pointer: coarse)').matches, DPR = Math.min(devicePixelRatio || 1, LITE ? 1 : 1.5);
+  function resize(){ cv.width = innerWidth * DPR; cv.height = innerHeight * DPR; }
   addEventListener('resize', resize); resize();
   function burst(x, y, n, spread=Math.PI*.9, angle=-Math.PI/2, power=1){
+    if(LITE) n = Math.round(n * .45);
     for(let i=0;i<n;i++){
       const a = angle + (Math.random()-.5)*spread, v = (7 + Math.random()*11) * power;
       parts.push({x, y, vx:Math.cos(a)*v, vy:Math.sin(a)*v, r:Math.random()*Math.PI, vr:(Math.random()-.5)*.35,
@@ -617,6 +599,7 @@ const Confetti = (() => {
     if(!running){ running = true; requestAnimationFrame(tick); }
   }
   function rain(n){
+    if(LITE) n = Math.round(n * .45);
     for(let i=0;i<n;i++){
       parts.push({x:Math.random()*innerWidth, y:-20-Math.random()*innerHeight*.6, vx:(Math.random()-.5)*2, vy:2+Math.random()*3,
         r:Math.random()*Math.PI, vr:(Math.random()-.5)*.3, w:7+Math.random()*7, h:4+Math.random()*6,
@@ -625,7 +608,7 @@ const Confetti = (() => {
     if(!running){ running = true; requestAnimationFrame(tick); }
   }
   function tick(){
-    const d = devicePixelRatio;
+    const d = DPR;
     ctx.clearRect(0,0,cv.width,cv.height);
     parts = parts.filter(p => p.y < innerHeight + 40 && p.life < 900);
     for(const p of parts){
@@ -1412,7 +1395,11 @@ function celebrate(s){
 }
 
 function closeSession(){
-  if(S){ clearTimeout(S.timer); clearTimeout(S.failTimer); }
+  if(S){ clearTimeout(S.timer); clearTimeout(S.failTimer); clearTimeout(S.rz);
+    // GeoGebra-Applet wirklich freigeben, sonst wächst der Speicher mit jeder Mission (ältere iPads hängen sich dann auf)
+    if(S.api){ const a = S.api; S.api = null; try{ a.unregisterAddListener && a.unregisterAddListener('__ggbAdd'); a.unregisterUpdateListener && a.unregisterUpdateListener('__ggbUpd'); a.unregisterRemoveListener && a.unregisterRemoveListener('__ggbRem'); }catch(e){}
+      try{ a.remove && a.remove(); }catch(e){} }
+  }
   S = null;
   $('ggbHost').innerHTML = '';
 }
@@ -1461,45 +1448,6 @@ addEventListener('keydown', e => {
   if(e.ctrlKey && e.altKey && (e.key === 'l' || e.key === 'L') && S && !S.solved){ e.preventDefault(); solve(S); }
 }, true);
 
-/* ---------- Vollbild ---------- */
-/* Vollbild: automatisch beim Start und nach jedem Verlassen beim nächsten Tippen wieder an.
-   Als Home-Bildschirm-App nicht nötig. Auf iPad/iPhone wird der Vollbild-Knopf ausgeblendet. */
-const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-const IS_APP = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches;
-const NO_FS = IS_APP;
-if(IS_IOS || IS_APP) document.documentElement.classList.add('nofs');
-const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
-function enterFull(){
-  if(NO_FS) return;
-  const d = document.documentElement;
-  try{ const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d); if(r && r.catch) r.catch(()=>{}); }catch(e){}
-}
-function exitFull(){ try{ const r = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if(r && r.catch) r.catch(()=>{}); }catch(e){} }
-let fsManualOff = false;
-document.querySelectorAll('[data-fs]').forEach(b => b.addEventListener('click', () => {
-  if(isFull()){ fsManualOff = true; exitFull(); } else { fsManualOff = false; enterFull(); } }));
-function showSplash(){ $('splash').classList.remove('hidden'); }
-function startFromSplash(){
-  if($('splash').classList.contains('hidden')) return;
-  fsManualOff = false; $('splash').classList.add('hidden');
-  if(!state.name) askName();   // Vollbild erst nach der Namenseingabe
-  else enterFull();
-}
-$('splash').addEventListener('click', startFromSplash);
-$('splash').addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startFromSplash(); } });
-/* Falls das Vollbild verlassen wurde: beim nächsten Klick wieder einschalten */
-/* Safari (iPad) erlaubt Vollbild nur direkt nach einer Berührung -> bei touchend/click/keydown erneut versuchen */
-const refull = e => {
-  if(typingName || fsManualOff || isFull()) return;
-  const t = e.target && e.target.closest ? e.target : null;
-  if(t && t.closest('[data-fs]')) return;
-  if(t && t.closest('#splash') && !state.name) return;      // Startbildschirm -> erst Name, dann Vollbild
-  enterFull();
-};
-['pointerdown','touchend','click','keydown'].forEach(ev => document.addEventListener(ev, refull, true));
-document.addEventListener('fullscreenchange', () => {
-  if(S && S.api){ setTimeout(() => { try{ const h = $('ggbHost'); S.api.setSize(h.clientWidth, h.clientHeight); fitView(S.api, SETUP[S.task].box, !!SETUP[S.task].toolbar); }catch(e){} }, 300); }
-});
 
 /* ---------- Automatischer Neustart nach 5 Minuten ohne Bedienung ---------- */
 const IDLE_MS = 5 * 60 * 1000;
@@ -1510,12 +1458,13 @@ setInterval(() => {
   if(Date.now() - lastActivity < IDLE_MS) return;
   lastActivity = Date.now();
   const fresh = !state.name && doneCount() === 0 && !S && document.getElementById('nameField');
-  if(!fresh && $('splash').classList.contains('hidden')) newGame();
+  if(!fresh) newGame();
 }, 10000);
 
 renderHello();
 renderMenu();
 if(doneCount() === ORDER.length) state.celebrated = true;
+if(!state.name && doneCount() === 0) askName();   // Start: direkt nach dem Namen fragen
 </script>
 </body>
 </html>
