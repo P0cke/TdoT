@@ -517,7 +517,11 @@ function renderMenu(stampFor){
   $('menu').classList.toggle('alldone', n === N);
 }
 function renderHello(){ $('helloBtn').textContent = state.name ? `Hallo, ${state.name}! ✎` : 'Wie heißt du? ✎'; }
+/* Während der Namenseingabe kein Vollbild: Safari (iPad) blockiert im Vollbild die Tastatur */
+let typingName = false;
 function askName(){
+  typingName = true;
+  try{ if(isFull()) exitFull(); }catch(e){}
   const m = showModal(`<div class="content" style="padding:30px 30px 28px;text-align:center">
       <div style="font-size:3rem;line-height:1">👋</div>
       <h2 style="font-size:2.2rem;margin:.2em 0 .1em">Wie heißt du?</h2>
@@ -532,7 +536,7 @@ function askName(){
   const f = m.el.querySelector('#nameField'), ok = m.el.querySelector('[data-ok]');
   f.value = state.name || '';
   const upd = () => { const v = f.value.trim(); ok.disabled = !v; ok.style.opacity = v ? 1 : .5; };
-  const done = v => { state.name = v; save(); renderHello(); m.close(); };
+  const done = v => { state.name = v; save(); renderHello(); f.blur(); m.close(); typingName = false; enterFull(); };
   f.addEventListener('input', upd); upd();
   f.addEventListener('keydown', e => { if(e.key === 'Enter' && f.value.trim()) done(f.value.trim()); });
   ok.addEventListener('click', () => f.value.trim() && done(f.value.trim()));
@@ -1477,14 +1481,21 @@ document.querySelectorAll('[data-fs]').forEach(b => b.addEventListener('click', 
 function showSplash(){ $('splash').classList.remove('hidden'); }
 function startFromSplash(){
   if($('splash').classList.contains('hidden')) return;
-  fsManualOff = false; enterFull(); $('splash').classList.add('hidden');
-  if(!state.name) askName();
+  fsManualOff = false; $('splash').classList.add('hidden');
+  if(!state.name) askName();   // Vollbild erst nach der Namenseingabe
+  else enterFull();
 }
 $('splash').addEventListener('click', startFromSplash);
 $('splash').addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); startFromSplash(); } });
 /* Falls das Vollbild verlassen wurde: beim nächsten Klick wieder einschalten */
 /* Safari (iPad) erlaubt Vollbild nur direkt nach einer Berührung -> bei touchend/click/keydown erneut versuchen */
-const refull = e => { if(!fsManualOff && !isFull() && !(e.target && e.target.closest && e.target.closest('[data-fs]'))) enterFull(); };
+const refull = e => {
+  if(typingName || fsManualOff || isFull()) return;
+  const t = e.target && e.target.closest ? e.target : null;
+  if(t && t.closest('[data-fs]')) return;
+  if(t && t.closest('#splash') && !state.name) return;      // Startbildschirm -> erst Name, dann Vollbild
+  enterFull();
+};
 ['pointerdown','touchend','click','keydown'].forEach(ev => document.addEventListener(ev, refull, true));
 document.addEventListener('fullscreenchange', () => {
   if(S && S.api){ setTimeout(() => { try{ const h = $('ggbHost'); S.api.setSize(h.clientWidth, h.clientHeight); fitView(S.api, SETUP[S.task].box, !!SETUP[S.task].toolbar); }catch(e){} }, 300); }
